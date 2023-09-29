@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import './questao.dart';
+import './resposta.dart';
+
 main() {
   runApp(PerguntaApp());
 }
@@ -10,14 +13,9 @@ main() {
 //scaffold vai dar a estrutura básica de design da aplicação
 //column uma lista de elementos organizados verticalmente, ele recebe um childrem(lista de items filhos) como argumento
 
-class PeraguntaAppState extends State<PerguntaApp> {
+/*essa clase gerência o estado*/
+class _PerguntaAppState extends State<PerguntaApp> {
   Widget build(BuildContext context) {
-    final List<String> perguntas = [
-      "Qual é sua cor favorita ?",
-      "Qual é sua musica favorita ?",
-      "Qual é seu esporte favorito ?"
-    ];
-
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
@@ -25,26 +23,43 @@ class PeraguntaAppState extends State<PerguntaApp> {
         ),
         body: Column(
           children: <Widget>[
-            Text(perguntas[perguntaSelecionada]),
-            ElevatedButton(onPressed: responder, child: Text("Resposta1")),
-            ElevatedButton(onPressed: responder, child: Text("Resposta2")),
-            ElevatedButton(onPressed: responder, child: Text("Resposta3"))
+            Questao(_perguntas[_perguntaSelecionada]),
+            Resposta("Resposta1"),
+            Resposta("Resposta2"),
+            Resposta("Resposta3")
           ],
         ),
       ),
     );
   }
 
-  var perguntaSelecionada = 0;
-  void responder() {
-    perguntaSelecionada++;
-    print(perguntaSelecionada);
+  final List<String> _perguntas = [
+    "Qual é sua cor favorita ?",
+    "Qual é sua musica favorita ?",
+    "Qual é seu esporte favorito ?",
+    "Qual é o seu carro favorito ?"
+  ];
+
+  var _perguntaSelecionada = 0;
+
+  void _responder() {
+    setState(() {
+      _perguntaSelecionada++;
+    });
+
+    if (_perguntaSelecionada > _perguntas.length - 1) {
+      setState(() {
+        _perguntaSelecionada = 0;
+      });
+    }
+
+    print(_perguntaSelecionada);
   }
 }
 
 class PerguntaApp extends StatefulWidget {
   @override
-  PeraguntaAppState createState() {
-    return PeraguntaAppState();
+  _PerguntaAppState createState() {
+    return _PerguntaAppState();
   }
 }
