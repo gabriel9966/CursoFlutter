@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import './questao.dart';
 import './resposta.dart';
+import './resultado.dart';
 
 main() {
   runApp(PerguntaApp());
@@ -16,44 +17,68 @@ main() {
 /*essa clase gerência o estado*/
 class _PerguntaAppState extends State<PerguntaApp> {
   Widget build(BuildContext context) {
+    List<String>? resposta = temPerguntaSelecionada
+        ? _perguntas[_perguntaSelecionada]["resposta"] as List<String>
+        : null;
+    List<Widget>? widget =
+        resposta?.map((t) => Resposta(t, _responder)).toList();
+
+/*
+    final respostas =
+        _perguntas[_perguntaSelecionada]?["resposta"] as List<String>?;
+
+    if (respostas != null) {
+      for (String i in respostas) {
+        resposta.add(Resposta(i, _responder));
+      }
+    }*/
+
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
           title: Text("Primeiro"),
         ),
-        body: Column(
-          children: <Widget>[
-            Questao(_perguntas[_perguntaSelecionada]),
-            Resposta("Resposta1"),
-            Resposta("Resposta2"),
-            Resposta("Resposta3")
-          ],
-        ),
+        body: temPerguntaSelecionada
+            ? Column(
+                children: <Widget>[
+                  Questao(_perguntas[_perguntaSelecionada]["texto"]
+                      as String), //as String conversão explicita
+                  if (resposta != null) ...?widget
+                  //... todos os elementos sao adicionados
+                ],
+              )
+            : Resultado(),
       ),
     );
   }
 
-  final List<String> _perguntas = [
-    "Qual é sua cor favorita ?",
-    "Qual é sua musica favorita ?",
-    "Qual é seu esporte favorito ?",
-    "Qual é o seu carro favorito ?"
+  bool get temPerguntaSelecionada {
+    return _perguntaSelecionada < _perguntas.length;
+  }
+
+  final List<Map<String, Object>> _perguntas = const [
+    {
+      "texto": "Qual é sua cor favorita ?",
+      "resposta": ["Preto", "Vermelho", "Verde", "Branco"]
+    },
+    {
+      "texto": "Qual é seu esporte favorito ?",
+      "resposta": ["Correr", "Nadar", "Academia", "Futebol"]
+    },
+    {
+      "texto": "Qual é o seu carro favorito ?",
+      "resposta": ["Ferrari", "Porsche", "Maserati", "Ford"]
+    }
   ];
 
   var _perguntaSelecionada = 0;
 
   void _responder() {
-    setState(() {
-      _perguntaSelecionada++;
-    });
-
-    if (_perguntaSelecionada > _perguntas.length - 1) {
+    if (temPerguntaSelecionada) {
       setState(() {
-        _perguntaSelecionada = 0;
+        _perguntaSelecionada++;
       });
     }
-
-    print(_perguntaSelecionada);
   }
 }
 
