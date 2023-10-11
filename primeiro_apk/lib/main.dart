@@ -35,21 +35,33 @@ class _PerguntaAppState extends State<PerguntaApp> {
 
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: Text("Primeiro"),
-        ),
-        body: temPerguntaSelecionada
-            ? Column(
-                children: <Widget>[
-                  Questao(_perguntas[_perguntaSelecionada]["texto"]
-                      as String), //as String conversão explicita
-                  if (resposta != null) ...?widget
-                  //... todos os elementos sao adicionados
-                ],
-              )
-            : Resultado(),
-      ),
+          appBar: AppBar(
+            title: Text("Primeiro"),
+          ),
+          body: temPerguntaSelecionada
+              ? Column(
+                  children: <Widget>[
+                    Questao(_perguntas[_perguntaSelecionada]["texto"]
+                        as String), //as String conversão explicita
+                    if (resposta != null) ...?widget
+                    //... todos os elementos sao adicionados
+                  ],
+                )
+              : Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Resultado(),
+                    ElevatedButton(
+                        onPressed: _reiniciar, child: Text("Reiniciar"))
+                  ],
+                )),
     );
+  }
+
+  void _reiniciar() {
+    setState(() {
+      _perguntaSelecionada = 0;
+    });
   }
 
   bool get temPerguntaSelecionada {

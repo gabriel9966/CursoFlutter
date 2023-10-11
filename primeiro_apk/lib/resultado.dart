@@ -9,7 +9,7 @@ class Resultado extends StatelessWidget {
     int Naeatorio = rd.nextInt(101);
 
     return Center(
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+        child: Column(children: [
       Text(
         Naeatorio.toString() + " %",
         style: TextStyle(fontSize: 25),
