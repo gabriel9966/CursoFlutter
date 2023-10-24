@@ -94,6 +94,7 @@ class _PerguntaAppState extends State<PerguntaApp> {
   }
 }
 
+//com estado
 class PerguntaApp extends StatefulWidget {
   @override
   _PerguntaAppState createState() {
